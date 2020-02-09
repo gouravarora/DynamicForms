@@ -1,0 +1,81 @@
+<!--
+    Only Display Create button when there are nno any Forms Saved
+    Forms are been fetched 
+    by localstoargeservice
+-->
+<div class="containers">
+    <button mat-button (click)="createForm()" *ngIf="!savedForms && !formcreater">
+        Create Form
+    </button>
+
+    <div class="create-form" *ngIf="formcreater">
+        <form [formGroup]="formcreater">
+            <mat-form-field class="example-full-width">
+                <mat-label>Form Name</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+
+            <div class="controls-iterator" formArrayName="items" *ngFor="let control of formcreater.get('items').controls; let i = index;">
+                <div [formGroupName]="i">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Input Label</mat-label>
+                        <input matInput formControlName="label">
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Input Type</mat-label>
+                        <mat-select (selectionChange)="changeControlType(i, $event)">
+                            <mat-option value="text">Text Box</mat-option>
+                            <mat-option value="number">Number</mat-option>
+                            <mat-option value="radio">Radio</mat-option>
+                            <mat-option value="checkbox">Checkbox</mat-option>
+                            <mat-option value="selection">Selection</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Will be adding extras for the contol
+                        extras will label & value
+                    -->
+                    <div class="adding-extras" *ngIf="needExtras[i]">
+                        <div class="extras" formArrayName="extras"
+                            *ngFor="let extra of formcreater.get('items').controls[i].get('extras').controls; let k = index">
+                            <div [formGroupName]="k">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Value" formControlName="value">
+                                </mat-form-field>
+                    
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Label" formControlName="label">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <button type="button" mat-button (click)="addExtra(i)">
+                            Add Extra
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" mat-button (click)="addAControl()">
+                    Add control
+                </button>
+                <button mat-button *ngIf="!formToUpdate" (click)="saveForm()">
+                    Save Form
+                </button>
+                <button mat-button *ngIf="formToUpdate" (click)="updateForm()">
+                    Update Form
+                </button>
+            </div>
+        </form>
+    </div>
+    <app-renderform [data]="formToRender" *ngIf="formToRender">
+    </app-renderform>
+    <app-listform
+    *ngIf="savedForms"
+    [items]="savedForms"
+    (editForm)="editForm($event)"
+    (renderForm)="renderForm($event)"></app-listform>
+
+
+</div>

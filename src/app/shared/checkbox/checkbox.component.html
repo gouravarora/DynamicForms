@@ -1,0 +1,4 @@
+<div>
+    <mat-label>{{ data.label }}</mat-label>
+    <mat-checkbox [value]="item.value" *ngFor="let item of data?.extras">{{ item.label }}</mat-checkbox>
+</div>

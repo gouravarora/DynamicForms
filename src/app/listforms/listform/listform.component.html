@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="item header">
+        <div class="name">
+            Name
+        </div>
+        <div class="Render">
+            Render
+        </div>
+        <div class="Edit">
+            Edit
+        </div>
+    </div>
+    <div class="item" *ngFor="let item of items; let i = index;">
+        <div class="name">
+            {{ item.name }}
+        </div>
+        <div class="render-button">
+            <button matButton (click)="dispatchRender(item)">
+                Render
+            </button>
+        </div>
+        <div class="edit-button">
+            <button matButton (click)="dispatchEdit(item)">
+                Edit
+            </button>
+        </div>
+    </div>
+</div>
